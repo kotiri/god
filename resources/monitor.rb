@@ -1,8 +1,8 @@
 #
 # Cookbook Name:: god
-# Definition:: god_monitor
+# Resource:: monitor
 #
-# Copyright 2009, Opscode, Inc.
+# Copyright 2012, Opscode, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,22 +17,14 @@
 # limitations under the License.
 #
 
-define :god_monitor, :config => "mongrel.god.erb", :max_memory => 100, :cpu => 50 do
-  include_recipe "god"
-  
-  template "/etc/god/conf.d/#{params[:name]}.god" do
-    source params[:config]
-    owner "root"
-    group "root"
-    mode 0644
-    variables(
-      :name => params[:name],
-      :max_memory => params[:max_memory],
-      :cpu => params[:cpu],
-      :sv_bin => node[:runit][:sv_bin],
-      :params => params
-    )
-    notifies :restart, resources(:service => "god")
-  end
-  
+actions :create
+
+attribute :name, :kind_of => String, :name_attribute => true
+attribute :config, :kind_of => String, :default => "mongrel.god.erb"
+attribute :max_memory, :kind_of => Number, :default => 100
+attribute :cpu, :kind_of => Number, :default => 50
+
+def initialize(*args)
+  super
+  @action = :create
 end
