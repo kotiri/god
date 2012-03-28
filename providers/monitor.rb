@@ -18,7 +18,6 @@
 #
 
 action :create do
-  include_recipe "god"
 
   template "/etc/god/conf.d/#{new_resource.name}.god" do
     source new_resource.config
@@ -30,7 +29,7 @@ action :create do
       :max_memory => new_resource.max_memory,
       :cpu => new_resource.cpu,
       :sv_bin => node['runit']['sv_bin'],
-      :params => new_resource
+      :params => new_resource.to_hash
     )
     notifies :restart, resources(:service => "god")
   end

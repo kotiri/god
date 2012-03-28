@@ -21,8 +21,12 @@ actions :create
 
 attribute :name, :kind_of => String, :name_attribute => true
 attribute :config, :kind_of => String, :default => "mongrel.god.erb"
-attribute :max_memory, :kind_of => Number, :default => 100
-attribute :cpu, :kind_of => Number, :default => 50
+attribute :max_memory, :kind_of => Integer, :default => 100
+attribute :cpu, :kind_of => Integer, :default => 50
+
+attribute :start, :kind_of => String
+attribute :restart, :kind_of => String
+attribute :stop, :kind_of => String
 
 def initialize(*args)
   super
